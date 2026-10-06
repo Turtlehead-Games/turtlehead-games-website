@@ -1,0 +1,1178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TURTLEHEAD GAMES // SURVIVAL HORROR STUDIO</title>
+
+  <!-- Google Fonts: VT323 & Share Tech Mono for authentic retro terminal feel -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=VT323&display=swap" rel="stylesheet">
+
+  <style>
+    :root {
+      --bg-color: #050505;
+      --card-bg: #0d0d0d;
+      --border-color: #3f3f46;
+      --border-bright: #71717a;
+      --text-main: #e4e4e7;
+      --text-muted: #a1a1aa;
+      --accent-red: #ef4444;
+      --font-mono: 'Share Tech Mono', 'Courier New', monospace;
+      --font-vt: 'VT323', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--bg-color);
+      color: var(--text-main);
+      font-family: var(--font-mono);
+      line-height: 1.5;
+      font-size: 14px;
+      user-select: none;
+      -webkit-user-select: none;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    button {
+      font-family: inherit;
+      cursor: pointer;
+    }
+
+    /* Layout Containers */
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 16px;
+    }
+
+    /* Top Status Bar */
+    .top-status-bar {
+      background-color: #000;
+      border-bottom: 1px solid #27272a;
+      font-family: var(--font-vt);
+      font-size: 18px;
+      color: var(--text-muted);
+      padding: 6px 16px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      letter-spacing: 1px;
+    }
+
+    .rec-indicator {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .dot-rec {
+      width: 10px;
+      height: 10px;
+      background-color: var(--accent-red);
+      border-radius: 50%;
+      display: inline-block;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0.2; }
+    }
+
+    /* Main Header */
+    header {
+      background-color: #000;
+      border-bottom: 2px solid var(--border-color);
+      padding: 32px 0;
+    }
+
+    .header-content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      gap: 20px;
+    }
+
+    @media (min-width: 768px) {
+      .header-content {
+        flex-direction: row;
+      }
+    }
+
+    .brand-group {
+      display: flex;
+      align-items: center;
+      gap: 20px;
+    }
+
+    .logo-box {
+      width: 72px;
+      height: 72px;
+      background-color: #fff;
+      border: 2px solid #a1a1aa;
+      padding: 6px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 0 12px rgba(255, 255, 255, 0.1);
+    }
+
+    .brand-text h1 {
+      font-family: var(--font-vt);
+      font-size: 38px;
+      letter-spacing: 2px;
+      color: #fff;
+      line-height: 1;
+    }
+
+    .brand-text p {
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 3px;
+      margin-top: 4px;
+      text-transform: uppercase;
+    }
+
+    .header-warning {
+      border: 1px solid #7f1d1d;
+      background-color: rgba(127, 29, 29, 0.15);
+      padding: 10px 16px;
+      color: var(--accent-red);
+      font-size: 11px;
+      letter-spacing: 1px;
+    }
+
+    .header-warning-title {
+      font-family: var(--font-vt);
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    /* Navigation Bar */
+    nav {
+      background-color: #0a0a0a;
+      border-bottom: 1px solid var(--border-color);
+      position: sticky;
+      top: 0;
+      z-index: 40;
+    }
+
+    .nav-tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      padding: 12px 0;
+    }
+
+    .nav-btn {
+      background-color: #121212;
+      color: var(--text-muted);
+      border: 1px solid var(--border-color);
+      padding: 8px 16px;
+      font-size: 12px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      transition: all 0.2s ease;
+      text-transform: uppercase;
+    }
+
+    .nav-btn:hover {
+      border-color: var(--border-bright);
+      color: #fff;
+    }
+
+    .nav-btn.active {
+      background-color: #e4e4e7;
+      color: #000;
+      border-color: #fff;
+    }
+
+    /* Main Content Area */
+    main {
+      padding: 40px 0;
+      min-height: 60vh;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Custom Retro Boxes */
+    .re-box {
+      background: radial-gradient(circle at center, #141414 0%, #080808 100%);
+      border: 1px solid var(--border-color);
+      padding: 24px;
+      margin-bottom: 24px;
+    }
+
+    .re-border {
+      border: 2px solid var(--border-color);
+      background-color: #000;
+      padding: 20px;
+    }
+
+    .section-header {
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 12px;
+      margin-bottom: 24px;
+    }
+
+    .section-tag {
+      font-size: 11px;
+      color: var(--text-muted);
+      letter-spacing: 2px;
+    }
+
+    .section-title {
+      font-family: var(--font-vt);
+      font-size: 32px;
+      color: #fff;
+      letter-spacing: 1px;
+    }
+
+    /* Tab 1: Manifesto */
+    .memo-header {
+      color: var(--accent-red);
+      font-family: var(--font-vt);
+      font-size: 20px;
+      letter-spacing: 1px;
+    }
+
+    .memo-text {
+      margin-top: 16px;
+      color: #d4d4d8;
+      font-size: 13px;
+      line-height: 1.7;
+    }
+
+    .memo-text p {
+      margin-bottom: 14px;
+    }
+
+    .memo-highlight {
+      background-color: #18181b;
+      border: 1px solid #3f3f46;
+      padding: 2px 6px;
+      color: #fff;
+    }
+
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+    }
+
+    @media (min-width: 768px) {
+      .pillars-grid {
+        grid-template-columns: repeat(3, 1fr);
+      }
+    }
+
+    .pillar-card h3 {
+      font-family: var(--font-vt);
+      font-size: 22px;
+      color: var(--accent-red);
+      margin-bottom: 8px;
+    }
+
+    .pillar-card p {
+      font-size: 12px;
+      color: var(--text-muted);
+      line-height: 1.6;
+    }
+
+    /* Tab 2: Projects */
+    .projects-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 24px;
+    }
+
+    @media (min-width: 768px) {
+      .projects-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    .project-card {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      border: 2px solid var(--border-color);
+      transition: border-color 0.2s;
+    }
+
+    .project-card:hover {
+      border-color: var(--border-bright);
+    }
+
+    .camera-feed-bar {
+      background-color: #000;
+      border: 1px solid var(--border-color);
+      padding: 8px 12px;
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      margin-bottom: 16px;
+    }
+
+    .camera-id {
+      color: var(--accent-red);
+    }
+
+    .surveillance-screen {
+      height: 180px;
+      background-color: #080808;
+      border: 1px solid var(--border-color);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: 16px;
+      position: relative;
+    }
+
+    .screen-icon {
+      font-size: 32px;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .screen-status {
+      font-size: 10px;
+      color: var(--text-muted);
+      letter-spacing: 2px;
+    }
+
+    .screen-title {
+      font-family: var(--font-vt);
+      font-size: 22px;
+      color: var(--text-main);
+    }
+
+    .badge-status {
+      position: absolute;
+      bottom: 8px;
+      right: 8px;
+      background-color: rgba(127, 29, 29, 0.8);
+      border: 1px solid #991b1b;
+      color: #fca5a5;
+      font-size: 10px;
+      padding: 2px 6px;
+    }
+
+    .project-type {
+      color: var(--accent-red);
+      font-size: 11px;
+      margin-bottom: 12px;
+    }
+
+    .project-brief {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 16px;
+      line-height: 1.5;
+    }
+
+    .specs-table {
+      background-color: #000;
+      border: 1px solid var(--border-color);
+      padding: 10px;
+      font-size: 11px;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+
+    .spec-label {
+      color: var(--text-muted);
+    }
+
+    .spec-val {
+      color: var(--text-main);
+    }
+
+    .btn-inspect {
+      width: 100%;
+      background-color: #18181b;
+      color: var(--text-main);
+      border: 1px solid var(--border-color);
+      padding: 12px;
+      font-size: 11px;
+      font-weight: bold;
+      letter-spacing: 2px;
+      text-transform: uppercase;
+      transition: all 0.2s;
+    }
+
+    .btn-inspect:hover {
+      background-color: #fff;
+      color: #000;
+      border-color: #fff;
+    }
+
+    /* Tab 3: Terminal Console */
+    .terminal-box {
+      background-color: #000;
+      border: 1px solid var(--border-color);
+      padding: 16px;
+      height: 240px;
+      overflow-y: auto;
+      margin-bottom: 12px;
+      font-size: 12px;
+    }
+
+    .term-line {
+      margin-bottom: 6px;
+    }
+
+    .term-system { color: #34d399; }
+    .term-user { color: #fff; }
+    .term-response { color: #a1a1aa; }
+    .term-error { color: var(--accent-red); }
+
+    .terminal-form {
+      display: flex;
+      gap: 8px;
+    }
+
+    .term-prompt {
+      color: #fff;
+      font-weight: bold;
+      padding-top: 8px;
+    }
+
+    .term-input {
+      flex-grow: 1;
+      background-color: #000;
+      border: 1px solid var(--border-color);
+      color: #fff;
+      padding: 8px 12px;
+      font-family: inherit;
+      font-size: 12px;
+    }
+
+    .term-input:focus {
+      outline: none;
+      border-color: #fff;
+    }
+
+    .btn-execute {
+      background-color: #27272a;
+      color: #fff;
+      border: 1px solid var(--border-color);
+      padding: 8px 16px;
+      font-size: 11px;
+      font-weight: bold;
+    }
+
+    .btn-execute:hover {
+      background-color: #fff;
+      color: #000;
+    }
+
+    .log-card {
+      background-color: #080808;
+      border: 1px solid var(--border-color);
+      padding: 16px;
+      margin-bottom: 12px;
+    }
+
+    .log-meta {
+      display: flex;
+      justify-content: space-between;
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .log-id { color: var(--accent-red); font-weight: bold; }
+    .log-title { color: #fff; font-size: 13px; font-weight: bold; margin-bottom: 6px; }
+    .log-body { color: var(--text-muted); font-size: 12px; }
+
+    /* Tab 4: Contact */
+    .contact-box {
+      text-align: center;
+      max-width: 600px;
+      margin: 0 auto;
+    }
+
+    .contact-icon {
+      font-size: 36px;
+      color: var(--accent-red);
+      margin-bottom: 12px;
+    }
+
+    .contact-title {
+      font-family: var(--font-vt);
+      font-size: 28px;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+
+    .contact-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 24px;
+    }
+
+    .contact-form {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      max-width: 420px;
+      margin: 0 auto;
+    }
+
+    @media (min-width: 640px) {
+      .contact-form {
+        flex-direction: row;
+      }
+    }
+
+    .contact-input {
+      flex-grow: 1;
+      background-color: #000;
+      border: 1px solid var(--border-color);
+      padding: 12px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 12px;
+    }
+
+    .contact-input:focus {
+      outline: none;
+      border-color: #fff;
+    }
+
+    .btn-transmit {
+      background-color: #fff;
+      color: #000;
+      border: none;
+      padding: 12px 20px;
+      font-weight: bold;
+      font-size: 11px;
+      letter-spacing: 1px;
+    }
+
+    .btn-transmit:hover {
+      background-color: #d4d4d8;
+    }
+
+    .contact-success {
+      padding: 16px;
+      background-color: rgba(127, 29, 29, 0.2);
+      border: 1px solid #991b1b;
+      color: #fca5a5;
+      font-size: 12px;
+    }
+
+    .contacts-grid {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 16px;
+      margin-top: 32px;
+    }
+
+    @media (min-width: 640px) {
+      .contacts-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    /* Modal Styling */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; width: 100%; height: 100%;
+      background-color: rgba(0, 0, 0, 0.85);
+      z-index: 100;
+      align-items: center;
+      justify-content: center;
+      padding: 16px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: radial-gradient(circle at center, #141414 0%, #080808 100%);
+      border: 2px solid #fff;
+      max-width: 600px;
+      width: 100%;
+      padding: 24px;
+      position: relative;
+      max-height: 85vh;
+      overflow-y: auto;
+    }
+
+    .modal-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid var(--border-color);
+      padding-bottom: 12px;
+      margin-bottom: 16px;
+    }
+
+    .modal-title-code {
+      font-family: var(--font-vt);
+      font-size: 22px;
+      color: var(--accent-red);
+    }
+
+    .modal-close {
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 20px;
+    }
+
+    .modal-close:hover {
+      color: #fff;
+    }
+
+    .modal-body h3 {
+      font-family: var(--font-vt);
+      font-size: 26px;
+      color: #fff;
+    }
+
+    .modal-body .game-type {
+      color: var(--accent-red);
+      font-size: 11px;
+      margin-bottom: 16px;
+    }
+
+    .modal-section-title {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+      font-weight: bold;
+    }
+
+    .modal-lore-text {
+      background-color: #000;
+      border: 1px solid var(--border-color);
+      padding: 12px;
+      color: #d4d4d8;
+      font-size: 12px;
+      line-height: 1.6;
+      margin-bottom: 16px;
+    }
+
+    .modal-features {
+      list-style-type: square;
+      padding-left: 20px;
+      color: #d4d4d8;
+      font-size: 12px;
+      margin-bottom: 20px;
+    }
+
+    .modal-features li {
+      margin-bottom: 4px;
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--border-color);
+      background-color: #000;
+      padding: 32px 0;
+      color: var(--text-muted);
+      font-size: 11px;
+      text-align: center;
+    }
+
+    .footer-content {
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    @media (min-width: 768px) {
+      .footer-content {
+        flex-direction: row;
+      }
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <div class="top-status-bar">
+    <div class="rec-indicator">
+      <span class="dot-rec"></span>
+      <span>OCT 06 2026 - REC [<span id="clock">00:00:00</span>]</span>
+      <span style="color: #3f3f46; margin: 0 4px;">|</span>
+      <span>SIGNAL: ENCRYPTED_V2</span>
+    </div>
+    <div>SYS_VER: 3.01.09</div>
+  </div>
+
+  <header>
+    <div class="container header-content">
+      <div class="brand-group">
+        <!-- SVG Logo: Turtlehead Scared Turtle -->
+        <div class="logo-box">
+          <svg viewBox="0 0 200 160" width="100%" height="100%" fill="none">
+            <!-- Turtle Shell Contour -->
+            <path d="M 30 130 C 30 85, 60 55, 95 55 C 115 55, 130 65, 140 80 C 130 95, 115 110, 85 115 C 60 120, 45 130, 30 130 Z" stroke="#000" stroke-width="8" fill="none" />
+            <!-- Turtle Head -->
+            <path d="M 80 80 C 85 40, 115 20, 150 25 C 180 30, 195 50, 185 75 C 175 95, 135 105, 100 90 Z" fill="#000" />
+            <!-- Big Scared Eyes -->
+            <circle cx="140" cy="45" r="14" fill="#fff" />
+            <circle cx="137" cy="42" r="5" fill="#000" />
+            <circle cx="170" cy="55" r="12" fill="#fff" />
+            <circle cx="168" cy="52" r="4" fill="#000" />
+            <!-- Scared Downward Mouth -->
+            <path d="M 148 78 Q 160 70 170 78" stroke="#fff" stroke-width="5" stroke-linecap="round" fill="none" />
+          </svg>
+        </div>
+
+        <div class="brand-text">
+          <h1>TURTLEHEAD GAMES</h1>
+          <p>INDEPENDENT SURVIVAL HORROR </p>
+        </div>
+      </div>
+
+      <div class="header-warning">
+        <div class="header-warning-title">SURVIVAL NOTICE</div>
+        <div>ATMOSPHERIC DREAD • CO-OP PARANOIA</div>
+      </div>
+    </div>
+  </header>
+
+  <nav>
+    <div class="container nav-tabs">
+      <button class="nav-btn active" data-tab="manifesto">FILE 01: MANIFESTO</button>
+      <button class="nav-btn" data-tab="projects">FILE 02: PROJECTS</button>
+      <button class="nav-btn" data-tab="terminal">FILE 03: SYSTEM LOGS</button>
+      <button class="nav-btn" data-tab="transmission">FILE 04: TRANSMISSIONS</button>
+    </div>
+  </nav>
+
+  <main class="container">
+
+    <!-- TAB 1: MANIFESTO -->
+    <section id="manifesto" class="tab-content active">
+      <div class="re-box">
+        <div class="section-header">
+          <div class="memo-header">[ INTERNAL MEMORANDUM // REF: TH-INCEPTION ]</div>
+          <h2 class="section-title">STATEMENT OF INTENT: THE UNFORGIVING DARK</h2>
+        </div>
+
+        <div class="memo-text">
+          <p><strong>TO ALL SURVIVORS & PLAYERS:</strong></p>
+          <p>
+            Our mascot may look timid—a cute, frightened turtle peeking out from the dark. But do not be misled. 
+            <span class="memo-highlight">Turtlehead Games was founded to build uncompromising, high-tension horror experiences.</span>
+          </p>
+          <p>
+            We believe true psychological terror stems from vulnerability, limited visibility, and genuine reliance on your crewmates. We do not design simple jump-scare simulators. We craft claustrophobic, early-2000s styled tactical survival horror where resource management and communication dictate life or death.
+          </p>
+          <p>
+            Whether trapped in Triton-7's flooded submarine sectors or isolated in frozen arctic corridors, our games reward composure, strategy, and bravery under pressure.
+          </p>
+        </div>
+
+        <div style="margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border-color); display: flex; justify-content: space-between; font-size: 11px; color: var(--text-muted);">
+          <div>AUTHOR: LEAD DEVELOPER // TURTLEHEAD GAMES</div>
+          <div>STATUS: ACTIVE DEVELOPMENT</div>
+        </div>
+      </div>
+
+      <div class="pillars-grid">
+        <div class="re-border pillar-card">
+          <h3>01. CLAUSTROPHOBIA</h3>
+          <p>Narrow corridors, dynamic water pressure, flickering flashlights, and camera angles that evoke classic late-90s survival horror games.</p>
+        </div>
+        <div class="re-border pillar-card">
+          <h3>02. HIGH-STAKES CO-OP</h3>
+          <p>Cooperative gameplay built around real-time voice attenuation, shared oxygen systems, and paranoia-inducing gameplay loops.</p>
+        </div>
+        <div class="re-border pillar-card">
+          <h3>03. RETRO AESTHETIC</h3>
+          <p>Custom low-poly shaders, dithered textures, VHS scanline artifacts, and gritty UI tailored for survival horror purists.</p>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 2: PROJECTS -->
+    <section id="projects" class="tab-content">
+      <div class="section-header" style="display: flex; justify-content: space-between; align-items: flex-end;">
+        <div>
+          <div class="section-tag">CLASSIFIED ARCHIVES</div>
+          <h2 class="section-title">ACTIVE PROJECTS & DISPATCHES</h2>
+        </div>
+        <div class="section-tag">TOTAL FILES: 02</div>
+      </div>
+
+      <div class="projects-grid">
+
+        <!-- Project 1 -->
+        <div class="re-box project-card">
+          <div>
+            <div class="camera-feed-bar">
+              <span class="camera-id">● CAM_01: TRITON_SECTOR_4</span>
+              <span>FILE-0882-SUB</span>
+            </div>
+
+            <div class="surveillance-screen">
+              <div class="screen-icon">👁</div>
+              <div class="screen-status">[ SURVEILLANCE FEED CORRUPTED ]</div>
+              <div class="screen-title">PROJECT: SUBMERSION</div>
+              <div class="badge-status">CLOSED ALPHA</div>
+            </div>
+
+            <h3 style="font-family: var(--font-vt); font-size: 28px; color: #fff;">PROJECT: SUBMERSION</h3>
+            <div class="project-type">Deep-Sea Co-Op Survival Horror</div>
+            <p class="project-brief">A claustrophobic co-op underwater horror. Navigate flooded research sectors, manage oxygen, and repair hull breaches while hunted by bioluminescent anomalies.</p>
+
+            <div class="specs-table">
+              <div>
+                <div class="spec-label">PLAYERS:</div>
+                <div class="spec-val">1-4 Players Co-Op</div>
+              </div>
+              <div>
+                <div class="spec-label">TARGET DATE:</div>
+                <div class="spec-val">Q3 2027</div>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn-inspect" onclick="openModal('submersion')">INSPECT FILE & LORE</button>
+        </div>
+
+        <!-- Project 2 -->
+        <div class="re-box project-card">
+          <div>
+            <div class="camera-feed-bar">
+              <span class="camera-id">● CAM_04: ARCTIC_OUTPOST_13</span>
+              <span>FILE-0914-OUT</span>
+            </div>
+
+            <div class="surveillance-screen">
+              <div class="screen-icon">👁</div>
+              <div class="screen-status">[ SURVEILLANCE FEED CORRUPTED ]</div>
+              <div class="screen-title">OUTPOST 13: CORRIDOR</div>
+              <div class="badge-status">IN DEVELOPMENT</div>
+            </div>
+
+            <h3 style="font-family: var(--font-vt); font-size: 28px; color: #fff;">OUTPOST 13: CORRIDOR</h3>
+            <div class="project-type">VHS Body-Horror Co-Op</div>
+            <p class="project-brief">Gritty analog horror set in a freezing arctic research base. One player is secretly incubating a shape-shifting organism.</p>
+
+            <div class="specs-table">
+              <div>
+                <div class="spec-label">PLAYERS:</div>
+                <div class="spec-val">2-4 Players Co-Op</div>
+              </div>
+              <div>
+                <div class="spec-label">TARGET DATE:</div>
+                <div class="spec-val">Q1 2028</div>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn-inspect" onclick="openModal('outpost')">INSPECT FILE & LORE</button>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- TAB 3: SYSTEM TERMINAL -->
+    <section id="terminal" class="tab-content">
+      <div class="section-header">
+        <div class="section-tag">DEVELOPMENT FEED</div>
+        <h2 class="section-title">TERMINAL SYSTEM LOGS</h2>
+      </div>
+
+      <div class="re-box">
+        <div class="terminal-box" id="terminalOutput">
+          <div class="term-line term-system">TURTLEHEAD OS v3.01 (C) 1999-2026</div>
+          <div class="term-line term-system">Type "HELP" or "STATUS" for system commands.</div>
+        </div>
+
+        <form class="terminal-form" id="terminalForm">
+          <span class="term-prompt">&gt;</span>
+          <input type="text" class="term-input" id="terminalInput" placeholder="TYPE COMMAND (e.g. HELP, STATUS, TURTLE, PLAYTEST)..." autocomplete="off">
+          <button type="submit" class="btn-execute">EXECUTE</button>
+        </form>
+      </div>
+
+      <div style="margin-top: 32px;">
+        <h3 style="font-family: var(--font-vt); font-size: 22px; color: #fff; margin-bottom: 12px;">RECENT DISPATCHES</h3>
+        
+        <div class="log-card">
+          <div class="log-meta">
+            <span class="log-id">[LOG_89]</span>
+            <span>2026.10.04</span>
+          </div>
+          <div class="log-title">NETCODE & PROXIMITY VOICE CHAT IMPLEMENTED</div>
+          <div class="log-body">Integrated spatial audio attenuation for Triton underwater corridors. Sound bounces off steel walls realistically.</div>
+        </div>
+
+        <div class="log-card">
+          <div class="log-meta">
+            <span class="log-id">[LOG_88]</span>
+            <span>2026.09.28</span>
+          </div>
+          <div class="log-title">INTERNAL ALPHA PLAYTEST #04 CONCLUDED</div>
+          <div class="log-body">Submersion playtest complete. 84% failure rate in Sector 3 due to oxygen pressure drops. Adjusting valve mechanics.</div>
+        </div>
+
+        <div class="log-card">
+          <div class="log-meta">
+            <span class="log-id">[LOG_87]</span>
+            <span>2026.09.12</span>
+          </div>
+          <div class="log-title">ANALOG TEXTURE SHADER INJECTION</div>
+          <div class="log-body">Ported classic early-2000s rasterization dithering and vertex jittering shaders into our proprietary pipeline.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- TAB 4: TRANSMISSIONS -->
+    <section id="transmission" class="tab-content">
+      <div class="section-header" style="text-align: center;">
+        <div class="section-tag">ENCRYPTED COMMUNICATOR</div>
+        <h2 class="section-title">TRANSMISSION FREQUENCY</h2>
+      </div>
+
+      <div class="re-box contact-box">
+        <div class="contact-icon">📻</div>
+        <div class="contact-title">JOIN THE CLOSED PLAYTEST FREQUENCY</div>
+        <div class="contact-sub">Sign up to receive distress signals, development alpha keys, and private test build invites for Project Submersion.</div>
+
+        <div id="contactFormContainer">
+          <form class="contact-form" id="signupForm">
+            <input type="email" class="contact-input" placeholder="ENTER CALLSIGN / EMAIL..." required>
+            <button type="submit" class="btn-transmit">TRANSMIT</button>
+          </form>
+        </div>
+      </div>
+
+      <div class="contacts-grid">
+        <div class="re-border">
+          <div style="color: var(--text-muted); font-size: 11px;">PRESS & INQUIRIES</div>
+          <div style="color: #fff; font-size: 13px; margin-top: 4px;">press@turtleheadgames.com</div>
+        </div>
+        <div class="re-border">
+          <div style="color: var(--text-muted); font-size: 11px;">PUBLISHING / INQUIRIES</div>
+          <div style="color: #fff; font-size: 13px; margin-top: 4px;">contact@turtleheadgames.com</div>
+        </div>
+      </div>
+    </section>
+
+  </main>
+
+  <!-- Inspection Modal -->
+  <div class="modal-backdrop" id="inspectModal">
+    <div class="modal-box">
+      <div class="modal-header">
+        <div class="modal-title-code" id="modalCode">FILE-0000</div>
+        <button class="modal-close" onclick="closeModal()">✕</button>
+      </div>
+      <div class="modal-body">
+        <h3 id="modalTitle">GAME TITLE</h3>
+        <div class="game-type" id="modalType">GAME TYPE</div>
+
+        <div class="modal-section-title">[ LORE BRIEFING ]</div>
+        <div class="modal-lore-text" id="modalLore">Lore details...</div>
+
+        <div class="modal-section-title">[ KEY MECHANICS ]</div>
+        <ul class="modal-features" id="modalFeatures">
+          <li>Feature 1</li>
+        </ul>
+
+        <div style="text-align: right;">
+          <button class="btn-inspect" style="width: auto; padding: 8px 20px;" onclick="closeModal()">CLOSE FILE</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <footer>
+    <div class="container footer-content">
+      <div>© 1999-2026 TURTLEHEAD GAMES LTD. ALL RIGHTS RESERVED.</div>
+      <div class="footer-links">
+        <span>TERMS OF SURVIVAL</span>
+        <span>•</span>
+        <span>PRIVACY PROTOCOL</span>
+        <span>•</span>
+        <span>SYSTEM DIAGNOSTICS</span>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Project database for modal inspector
+    const gameDatabase = {
+      submersion: {
+        code: 'FILE-0882-SUB',
+        title: 'PROJECT: SUBMERSION',
+        type: 'Deep-Sea Co-Op Survival Horror',
+        lore: 'Facility Triton-7 went dark 72 hours ago. As a contracted deep-sea recovery crew, your team must enter the sub-trench station, restore auxiliary generators, and extract classified research data. The creature in the abyss reacts to sound and pressure shifts. Silence is survival.',
+        features: [
+          'Proximity-based sonar and comms disruption',
+          'Dynamic hull integrity and flooding physics',
+          'Permadeath mechanic with crew sanity loss',
+          'PS1/Early PS2 low-poly industrial aesthetic'
+        ]
+      },
+      outpost: {
+        code: 'FILE-0914-OUT',
+        title: 'OUTPOST 13: CORRIDOR',
+        type: 'VHS Body-Horror Co-Op',
+        lore: 'Blizzard conditions have isolated Outpost 13. System diagnostics report corrupted biometric logs. Trust no one—use radio checks, thermal scopes, and blood analysis kits to identify infected crew members before extraction arrives.',
+        features: [
+          'Paranoia-driven social deduction mechanics',
+          'Analog VHS camera filter and noise simulation',
+          'Proximity voice chat with realistic reverb',
+          'Procedurally generated ventilation systems'
+        ]
+      }
+    };
+
+    // Navigation Tab Switcher
+    const navButtons = document.querySelectorAll('.nav-btn');
+    const tabContents = document.querySelectorAll('.tab-content');
+
+    navButtons.forEach(btn => {
+      btn.addEventListener('click', () => {
+        const targetTab = btn.getAttribute('data-tab');
+
+        navButtons.forEach(b => b.classList.remove('active'));
+        tabContents.forEach(c => c.classList.remove('active'));
+
+        btn.classList.add('active');
+        document.getElementById(targetTab).classList.add('active');
+      });
+    });
+
+    // Clock simulation
+    function updateClock() {
+      const now = new Date();
+      const h = String(now.getHours()).padStart(2, '0');
+      const m = String(now.getMinutes()).padStart(2, '0');
+      const s = String(now.getSeconds()).padStart(2, '0');
+      document.getElementById('clock').textContent = `${h}:${m}:${s}`;
+    }
+    setInterval(updateClock, 1000);
+    updateClock();
+
+    // Modal Controller
+    function openModal(gameKey) {
+      const game = gameDatabase[gameKey];
+      if (!game) return;
+
+      document.getElementById('modalCode').textContent = game.code;
+      document.getElementById('modalTitle').textContent = game.title;
+      document.getElementById('modalType').textContent = game.type;
+      document.getElementById('modalLore').textContent = game.lore;
+
+      const featuresList = document.getElementById('modalFeatures');
+      featuresList.innerHTML = '';
+      game.features.forEach(f => {
+        const li = document.createElement('li');
+        li.textContent = f;
+        featuresList.appendChild(li);
+      });
+
+      document.getElementById('inspectModal').classList.add('open');
+    }
+
+    function closeModal() {
+      document.getElementById('inspectModal').classList.remove('open');
+    }
+
+    // Terminal Emulator
+    const terminalOutput = document.getElementById('terminalOutput');
+    const terminalForm = document.getElementById('terminalForm');
+    const terminalInput = document.getElementById('terminalInput');
+
+    terminalForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const cmd = terminalInput.value.trim().toLowerCase();
+      if (!cmd) return;
+
+      // Append user command
+      const userLine = document.createElement('div');
+      userLine.className = 'term-line term-user';
+      userLine.textContent = '> ' + terminalInput.value;
+      terminalOutput.appendChild(userLine);
+
+      // Process response
+      const respLine = document.createElement('div');
+      respLine.className = 'term-line term-response';
+
+      switch (cmd) {
+        case 'help':
+          respLine.textContent = 'AVAILABLE COMMANDS: HELP, STATUS, TURTLE, PLAYTEST, CLEAR, FILES';
+          break;
+        case 'status':
+          respLine.textContent = 'SYSTEM STATUS: 100% OPERATIONAL. ALL SECTORS MONITORED. ANOMALIES: 02';
+          break;
+        case 'turtle':
+          respLine.textContent = 'TURTLEHEAD GAMES: "TIMID LOGO, UNFORGIVING NIGHTMARES."';
+          break;
+        case 'playtest':
+          respLine.textContent = 'PLAYTEST REGISTRATION: PLEASE ENTER EMAIL IN TRANSMISSION FREQUENCY BOX.';
+          break;
+        case 'files':
+          respLine.textContent = 'FILES LOADED: PROJECT SUBMERSION [OK], OUTPOST 13 [OK]';
+          break;
+        case 'clear':
+          terminalOutput.innerHTML = '';
+          terminalInput.value = '';
+          return;
+        default:
+          respLine.className = 'term-line term-error';
+          respLine.textContent = `UNKNOWN COMMAND "${cmd}". TYPE "HELP" FOR COMMAND LIST.`;
+          break;
+      }
+
+      terminalOutput.appendChild(respLine);
+      terminalOutput.scrollTop = terminalOutput.scrollHeight;
+      terminalInput.value = '';
+    });
+
+    // Transmission Form Submission
+    const signupForm = document.getElementById('signupForm');
+    const contactFormContainer = document.getElementById('contactFormContainer');
+
+    signupForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      contactFormContainer.innerHTML = `
+        <div class="contact-success">
+          ✓ FREQUENCY CONNECTED. TRANSMISSION ACKNOWLEDGED.
+        </div>
+      `;
+    });
+  </script>
+</body>
+</html>

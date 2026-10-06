@@ -1,12 +1,421 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Turtlehead Games</title>
-    <link rel="stylesheet" href="style.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TURTLEHEAD GAMES // PSX HORROR STUDIO</title>
+
+  <!-- Google Font: Share Tech Mono for precise fixed-width character alignment -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Share+Tech+Mono&display=swap" rel="stylesheet">
+
+  <style>
+    /* Classic PC Blue Terminal / BIOS Palette */
+    :root {
+      --term-bg: #1313a3;
+      --term-card-bg: #0c0c38;
+      --term-text: #ffffff;
+      --term-text-dim: #a0a0ff;
+      --term-cyan: #00ffff;
+      --term-yellow: #ffff55;
+      --term-dark-bar: #000055;
+      --font-mono: 'Share Tech Mono', 'Courier New', 'Consolas', monospace;
+    }
+
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      background-color: var(--term-bg);
+      color: var(--term-text);
+      font-family: var(--font-mono);
+      font-size: 15px;
+      line-height: 1.45;
+      min-height: 100vh;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+    }
+
+    a {
+      color: var(--term-yellow);
+      text-decoration: none;
+    }
+
+    a:hover {
+      background-color: var(--term-yellow);
+      color: #000;
+    }
+
+    /* Container Box Styling using classic ASCII / Fixed-Width look */
+    .container {
+      max-width: 900px;
+      margin: 0 auto;
+      width: 100%;
+    }
+
+    /* Streamlined ASCII Card Frames */
+    .retro-window {
+      background-color: var(--term-card-bg);
+      border: 2px solid var(--term-text);
+      padding: 16px;
+      margin-bottom: 20px;
+      box-shadow: 4px 4px 0px rgba(0, 0, 0, 0.4);
+    }
+
+    .window-header {
+      background-color: var(--term-text);
+      color: var(--term-bg);
+      padding: 4px 12px;
+      font-weight: bold;
+      letter-spacing: 1px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin: -16px -16px 16px -16px;
+      text-transform: uppercase;
+    }
+
+    /* Header & Logo */
+    header {
+      text-align: center;
+      margin-bottom: 24px;
+    }
+
+    .logo-container {
+      width: 64px;
+      height: 64px;
+      margin: 0 auto 12px auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .title-main {
+      font-size: 26px;
+      color: var(--term-yellow);
+      letter-spacing: 2px;
+      text-transform: uppercase;
+    }
+
+    .subtitle {
+      color: var(--term-cyan);
+      font-size: 13px;
+      letter-spacing: 1px;
+      margin-top: 4px;
+    }
+
+    /* Content Layout */
+    .grid-2col {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 20px;
+    }
+
+    @media (min-width: 768px) {
+      .grid-2col {
+        grid-template-columns: 1fr 1fr;
+      }
+    }
+
+    .section-title {
+      color: var(--term-cyan);
+      font-size: 16px;
+      margin-bottom: 10px;
+      border-bottom: 1px dashed var(--term-text-dim);
+      padding-bottom: 4px;
+      text-transform: uppercase;
+    }
+
+    .editable-text {
+      color: var(--term-text);
+      font-size: 14px;
+      margin-bottom: 12px;
+    }
+
+    .tag-badge {
+      display: inline-block;
+      background-color: var(--term-dark-bar);
+      border: 1px solid var(--term-cyan);
+      color: var(--term-cyan);
+      font-size: 12px;
+      padding: 2px 8px;
+      margin-top: 6px;
+    }
+
+    /* Project Cards */
+    .project-title {
+      color: var(--term-yellow);
+      font-size: 18px;
+      font-weight: bold;
+    }
+
+    /* Interactive Terminal Widget */
+    .terminal-output {
+      background-color: var(--term-dark-bar);
+      border: 1px solid var(--term-text-dim);
+      height: 150px;
+      overflow-y: auto;
+      padding: 10px;
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .term-line {
+      margin-bottom: 4px;
+    }
+
+    .term-sys { color: var(--term-cyan); }
+    .term-usr { color: var(--term-yellow); }
+    .term-err { color: #ff5555; }
+
+    .term-input-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .term-prompt {
+      color: var(--term-yellow);
+      font-weight: bold;
+    }
+
+    .term-input {
+      flex-grow: 1;
+      background: var(--term-dark-bar);
+      border: 1px solid var(--term-text-dim);
+      color: var(--term-text);
+      font-family: var(--font-mono);
+      font-size: 14px;
+      padding: 6px 10px;
+    }
+
+    .term-input:focus {
+      outline: none;
+      border-color: var(--term-yellow);
+    }
+
+    .btn-term {
+      background-color: var(--term-text);
+      color: var(--term-bg);
+      border: none;
+      padding: 6px 14px;
+      font-family: var(--font-mono);
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    .btn-term:hover {
+      background-color: var(--term-yellow);
+      color: #000;
+    }
+
+    /* Contact Form Prompt */
+    .contact-form {
+      display: flex;
+      gap: 8px;
+      margin-top: 10px;
+    }
+
+    .contact-input {
+      flex-grow: 1;
+      background: var(--term-dark-bar);
+      border: 1px solid var(--term-text);
+      color: var(--term-text);
+      font-family: var(--font-mono);
+      padding: 8px;
+      font-size: 13px;
+    }
+
+    .contact-input:focus {
+      outline: none;
+      border-color: var(--term-cyan);
+    }
+
+    /* Footer */
+    footer {
+      text-align: center;
+      font-size: 12px;
+      color: var(--term-text-dim);
+      margin-top: 30px;
+      padding-top: 10px;
+      border-top: 1px solid var(--term-dark-bar);
+    }
+  </style>
 </head>
 <body>
-    Spooky Games are around the corner.
+
+  <div class="container">
+
+    <header>
+      <!-- Minimal White Turtlehead Logo Icon -->
+      <div class="logo-container">
+        <svg viewBox="0 0 200 160" width="100%" height="100%" fill="none">
+          <path d="M 30 130 C 30 85, 60 55, 95 55 C 115 55, 130 65, 140 80 C 130 95, 115 110, 85 115 C 60 120, 45 130, 30 130 Z" stroke="#ffffff" stroke-width="8" fill="none" />
+          <path d="M 80 80 C 85 40, 115 20, 150 25 C 180 30, 195 50, 185 75 C 175 95, 135 105, 100 90 Z" fill="#ffffff" />
+          <circle cx="140" cy="45" r="14" fill="#0000aa" />
+          <circle cx="137" cy="42" r="5" fill="#ffffff" />
+          <circle cx="170" cy="55" r="12" fill="#0000aa" />
+          <circle cx="168" cy="52" r="4" fill="#ffffff" />
+          <path d="M 148 78 Q 160 70 170 78" stroke="#0000aa" stroke-width="5" stroke-linecap="round" fill="none" />
+        </svg>
+      </div>
+
+      <h1 class="title-main">TURTLEHEAD GAMES</h1>
+      <div class="subtitle">► INDIE GAME STUDIO ◄</div>
+    </header>
+
+    <!-- Studio Overview & Info Window -->
+    <div class="retro-window">
+      <div class="window-header">
+        <span>┌─ ABOUT_STUDIO.SYS ─┐</span>
+        <span>SYS_STATUS: OK</span>
+      </div>
+
+      <div class="section-title">&gt; STUDIO MANIFESTO</div>
+      <p class="editable-text">
+        Welcome to Turtlehead Games. We are an independent game studio currently focused on horror games.
+      </p>
+      <p class="editable-text">
+        [ You can edit this text area anytime with your custom studio description, backstory, or design philosophy. ]
+      </p>
+
+      <div class="tag-badge">TARGET: SINGLE-PLAYER PSX HORROR</div>
+    </div>
+
+    <!-- Active Projects & Games Window -->
+    <div class="retro-window">
+      <div class="window-header">
+        <span>┌─ ACTIVE_PROJECTS.LOG ─┐</span>
+        <span>FILES: 01</span>
+      </div>
+
+      <div class="project-title">&gt; PROJECT: TITLE_PLACEHOLDER</div>
+      <div style="color: var(--term-cyan); font-size: 13px; margin: 4px 0 10px 0;">FORMAT: PSX / RETRO SURVIVAL HORROR</div>
+
+      <p class="editable-text">
+        A low-poly retro survival horror experience currently in development. Focused on tense atmospheric exploration, fixed camera angles, and nostalgic aesthetic detail.
+      </p>
+      <p class="editable-text">
+        [ Insert your game pitch, story summary, or gameplay features here. ]
+      </p>
+
+      <div style="margin-top: 12px; font-size: 13px; color: var(--term-text-dim);">
+        STATUS: IN DEVELOPMENT &nbsp;|&nbsp; PLATFORM: PC &nbsp;|&nbsp; TARGET: TBD
+      </div>
+    </div>
+
+    <!-- Interactive Terminal Command Console -->
+    <div class="retro-window">
+      <div class="window-header">
+        <span>┌─ COMMAND_PROMPT.EXE ─┐</span>
+        <span>INTERACTIVE</span>
+      </div>
+
+      <div class="terminal-output" id="terminalOutput">
+        <div class="term-line term-sys">TURTLEHEAD OS v1.02 (C) 2026</div>
+        <div class="term-line term-sys">Type "HELP" for available system commands.</div>
+      </div>
+
+      <form class="term-input-row" id="terminalForm">
+        <span class="term-prompt">C:\&gt;</span>
+        <input type="text" class="term-input" id="terminalInput" placeholder="TYPE COMMAND (e.g. HELP, ABOUT, GAMES, CLEAR)..." autocomplete="off">
+        <button type="submit" class="btn-term">EXECUTE</button>
+      </form>
+    </div>
+
+    <!-- System Log / Newsletter Transmission Form -->
+    <div class="retro-window">
+      <div class="window-header">
+        <span>┌─ TRANSMISSION_DISPATCH ─┐</span>
+        <span>STATION_LOG</span>
+      </div>
+
+      <div class="section-title">&gt; DISPATCH REGISTRATION</div>
+      <p class="editable-text">
+        Enter your email address to receive development updates and build announcements:
+      </p>
+
+      <div id="contactContainer">
+        <form class="contact-form" id="signupForm">
+          <input type="email" class="contact-input" placeholder="ENTER EMAIL ADDRESS..." required>
+          <button type="submit" class="btn-term">TRANSMIT</button>
+        </form>
+      </div>
+    </div>
+
+  </div>
+
+  <footer>
+    TURTLEHEAD GAMES © 2026 // HORROR DIVISION // ALL RIGHTS RESERVED
+  </footer>
+
+  <script>
+    // Interactive Terminal Script
+    const terminalOutput = document.getElementById('terminalOutput');
+    const terminalForm = document.getElementById('terminalForm');
+    const terminalInput = document.getElementById('terminalInput');
+
+    terminalForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      const cmd = terminalInput.value.trim().toUpperCase();
+      if (!cmd) return;
+
+      // Print User Input
+      const userLine = document.createElement('div');
+      userLine.className = 'term-line term-usr';
+      userLine.textContent = 'C:\\> ' + terminalInput.value;
+      terminalOutput.appendChild(userLine);
+
+      // System Output Response
+      const sysLine = document.createElement('div');
+      sysLine.className = 'term-line term-sys';
+
+      switch (cmd) {
+        case 'HELP':
+          sysLine.textContent = 'COMMANDS: HELP, ABOUT, GAMES, CONTACT, CLEAR';
+          break;
+        case 'ABOUT':
+          sysLine.textContent = 'TURTLEHEAD GAMES: DEDICATED TO LOW-POLY PSX SURVIVAL HORROR.';
+          break;
+        case 'GAMES':
+          sysLine.textContent = 'CURRENT PROJECT: UNANNOUNCED PSX HORROR TITLE [IN DEV].';
+          break;
+        case 'CONTACT':
+          sysLine.textContent = 'TRANSMISSION REGISTRATION ACTIVE AT THE BOTTOM OF PAGE.';
+          break;
+        case 'CLEAR':
+          terminalOutput.innerHTML = '';
+          terminalInput.value = '';
+          return;
+        default:
+          sysLine.className = 'term-line term-err';
+          sysLine.textContent = `BAD COMMAND OR FILENAME "${cmd}". TYPE "HELP".`;
+          break;
+      }
+
+      terminalOutput.appendChild(sysLine);
+      terminalOutput.scrollTop = terminalOutput.scrollHeight;
+      terminalInput.value = '';
+    });
+
+    // Transmission Sign-up Handler
+    const signupForm = document.getElementById('signupForm');
+    const contactContainer = document.getElementById('contactContainer');
+
+    signupForm.addEventListener('submit', (e) => {
+      e.preventDefault();
+      contactContainer.innerHTML = `
+        <div style="color: var(--term-cyan); font-weight: bold; padding: 6px 0;">
+          [✓] TRANSMISSION ACKNOWLEDGED. EMAIL REGISTERED TO LOG.
+        </div>
+      `;
+    });
+  </script>
 </body>
 </html>
