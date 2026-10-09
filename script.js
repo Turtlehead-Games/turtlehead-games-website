@@ -166,6 +166,21 @@ if (terminalForm) {
         response.textContent = "PROJECTS: THE MIDNIGHT SNACK / DARK FANTASY PROJECT";
         break;
 
+      case "sudo":
+      case "admin":
+        response.textContent = "PERMITTED ONLY FOR TURTLES.";
+        break;
+
+      case "ls":
+      case "dir":
+        response.textContent = "FILES: README.TXT / MIDNIGHT_SNACK.EXE / THE_BUNKER.EXE";
+        break;
+
+      case "matrix":
+      case "hack":
+        response.textContent = "SYSTEM OVERRIDE FAILED. PLEASE LEAVE THE MAINFRAME ALONE.";
+        break;
+
       case "clear":
         terminalOutput.innerHTML = "";
         terminalInput.value = "";
