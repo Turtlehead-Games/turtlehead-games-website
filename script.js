@@ -13,7 +13,7 @@ const projectDatabase = {
     title: "THE MIDNIGHT SNACK",
     type: "PSX-INSPIRED / HORROR / SINGLE PLAYER",
     description:
-      "A short retro-inspired horror experience about waking up in the middle of the night and discovering that getting to your car isn't quite as simple as it should be.",
+      "This is our first attempt at creating a game. It's a short horror experience designed to teach us how tobuild a game and learn the ropes of game development.Playing as an apartment landlord, you wake up in the middle of a stormy night, discover something is very wrong in your complex, and realize SOMETHING is very hungry.",
     features: [
       "PSX-inspired low-poly visuals",
       "Small atmospheric environment",
@@ -26,9 +26,9 @@ const projectDatabase = {
     title: "DARK FANTASY PROJECT",
     type: "DARK FANTASY / CO-OP / ADVENTURE",
     description:
-      "A future cooperative dark-fantasy game about strange worlds, dangerous ruins, questionable heroes, and the things waiting beyond the next dungeon door.",
+      " We don't want to give too much away just yet, but this is the game we are building toward:an unsettling dark fantasy cooperative adventure set in a strange world full of dangerous ruins, questionable heroes, and weird things waiting beyond the next door.",
     features: [
-      "Two-player cooperative gameplay",
+      "Four-player cooperative gameplay",
       "Dark fantasy environments",
       "Exploration and dungeon-based gameplay",
       "Retro-inspired visual direction",
